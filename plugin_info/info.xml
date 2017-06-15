@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+    <id>fbbot</id>
+    <name>Fbbot</name>
+    <description>Plugin pour lier Jeedom à Facebook Messenger</description>
+    <licence>AGPL</licence>
+    <author>Greenski</author>
+    <require>1.0</require>
+    <category>communication</category>
+</info>
+

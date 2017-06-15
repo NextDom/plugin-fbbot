@@ -1,0 +1,6 @@
+= Slack
+
+Ce plugin permet d'établir une connexion entre Slack et Jeedom pour envoyer des alertes à partir de Jeedom ou discuter avec Jeedom (en utilisant les interactions).
+
+'''
+include::configuration.asciidoc[]

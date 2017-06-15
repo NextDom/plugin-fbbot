@@ -1,0 +1,148 @@
+== Configuration du plugin
+
+Après téléchargement du plugin, il vous faut l'activer, celui-ci ne nécessite aucune autre configuration.
+
+image::../images/fbbot1.PNG[]
+
+== Configuration des équipements
+
+La configuration des équipements Slack est accessible à partir du menu plugin : 
+
+image::../images/fbbot2.PNG[]
+
+Voilà à quoi ressemble la page du plugin Slack (ici avec déjà 1 équipement) : 
+
+image::../images/fbbot3.PNG[]
+
+[TIP]
+Comme à beaucoup d'endroit sur Jeedom, mettre la souris tout à gauche permet de faire apparaître un menu d'accès rapide (vous pouvez à partir de votre profils le laisser toujours visible).
+
+Une fois que vous cliquez sur l'un d'eux, vous obtenez : 
+
+image::../images/fbbot4.PNG[]
+
+Vous retrouvez ici toute la configuration de votre équipement : 
+
+* *Nom de l'équipement* : nom de votre équipement Slack
+* *Activer* : permet de rendre votre équipement actif
+* *Visible* : le rend visible sur le dashboard
+* *Domaine* : nom de domaine de votre Slack (permet notament si vous avez plusieurs Slack de les différencier)
+* *Authentification token* : token de l'api Slack, utile uniquement pour l'envoi de fichier (capture d'une camera par exemple), voir plus bas la méthode pour le récupérer
+* *URL de retour* : c'est l'url qui faudra donner dans le webhook de Slack (attention il faut que votre Jeedom soit accessible de l'exterieur)
+
+En dessous vous retrouvez la configuration des commandes : 
+
+* *Nom* : nom de la commande
+* *Webhook* : URL à appeler pour envoyer un message sur Slack
+* *Destination* : non obligatoire, permet de forcer l'envoi d'un message vers un channel (canal) ou un utilisateur
+* Configuration avancée (petites roues crantées) : permet d'afficher la configuration avancée de la commande (méthode d'historisation, widget...)
+* Tester : permet de tester la commande
+* Supprimer (signe -) : permet de supprimer la commande
+
+[TIP]
+Il existe par défaut 2 commandes : Expéditeur qui vous donne le nom du dernier expéditeur du message et Message qui vous donne le message, cela peut servir, si vous voulez faire quelque chose qui n'est pas possible avec les interactions de déclencher un scénario sur l'arrivé d'un nouveau message par exemple et de récupérer la valeur de celui-ci (on peut par exemple imaginer faire lire le message sur des Sonos ou un Karotz)
+
+== Création d'un compte Slack
+
+Rien de plus il suffit d'aller link::https://fbbot.com/[ici], et de renseigner une adresse mail et un nom de domaine/companie, par exemple : 
+
+image::../images/fbbot5.PNG[]
+
+Il ne vous reste plus qu'à valider, vous allez recevoir un mail, il faut cliquer sur le lien pour activer votre compte et c'est bon
+
+Ensuite vous arriverez sur votre Slack : 
+
+image::../images/fbbot6.PNG[]
+
+À partir de la vous trouvez sur la gauche les canaux (channel) et les utilisateurs, au centre vous pouvez télécharger l'application Slack pour iOS, Android, Mac ou Windows
+
+== Ajout du webhook sortant
+
+Les wekhook permettent à Slack d'informer Jeedom de l'arrivée d'un message et d'attendre la réponse de Jeedom pour vous la retransmettre, pour se faire il faut aller dans les paramètres : 
+
+image::../images/fbbot7.PNG[]
+
+Il faut ensuite cliquer sur intégration : 
+
+image::../images/fbbot8.PNG[]
+
+Tout en bas vous trouverez "Outgoing WebHooks" : 
+
+image::../images/fbbot9.PNG[]
+
+Cliquez sur "Add" : 
+
+image::../images/fbbot10.PNG[]
+
+Puis "Add Outgoing WebHooks Integration" : 
+
+image::../images/fbbot11.PNG[]
+
+Vous retrouvez vers le bas de la page les différents paramètres : 
+
+* *Channel* : non obligatoire, permet de dire à Slack d'envoyer tout ce qui se trouve dans ce Channel à Jeedom. On peut par exemple créer un channel juste pour Jeedom (plus pratique que de mettre un mot déclencheur)
+* *Trigger Word(s)* : non obligatoire si vous avez mis un channel sinon il en faut absolument un. Ce champs permet de définir un mot déclencheur de l'envoi a Jeedom, par exemple si vous mettez Jeedom toute vos demandes devront commencer par Jeedom (ex : Jeedom combien fait-il dans le chambre)
+* *URL(s)* : URL à appeler, vous la trouvez sur la page de votre équipement sous Jeedom sous le nom de "URL de retour"
+
+Les autres champs ne sont pas utiles, hormis peut être le "Customize Name" qui permet de définir le nom du bot Jeedom (nom avec lequel répond Jeedom), vous pouvez aussi avec "Customize Icon" changer l'icone de Jeedom.
+
+Il faut ensuite cliquer sur "Save Settings" et c'est bon
+
+image::../images/fbbot12.PNG[]
+
+Voilà c'est bon vous pouvez parler à Jeedom à travers Slack
+
+[IMPORTANT]
+N'oubliez pas dans Jeedom de renseigner votre nom de domaine (nom de compagnie), sinon Jeedom refusera de vous répondre (attention ce champs est sensible à la case).
+
+[TIP]
+Étant donné que Jeedom sépare les équipements par domaine, il est possible si vous avez plusieurs domaines de séparer les équipements et donc les scénarios derrière.
+
+== Ajout due webhook entrant
+
+Les webhooks entrants permettent à Jeedom de communiquer un message sur un channel (canal) ou directement à une personne. Sans ces webhook Jeedom ne pourront prendre l'initiative de vous envoyer un message, pour se faire il faut aller dans les paramètres : 
+
+image::../images/fbbot7.PNG[]
+
+Il faut ensuite cliquer sur integration : 
+
+image::../images/fbbot8.PNG[]
+
+Tout en bas vous trouverez "Incoming WebHooks" : 
+
+image::../images/fbbot13.PNG[]
+
+Ensuite, il vous faut choisir un channel (canal) ou un utilisateur de destination par défaut (on peut après en spécifier un par commande dans Jeedom) : 
+
+image::../images/fbbot14.PNG[]
+
+Cliquez ensuite sur "Add Incoming WebHooks Integration".
+
+image::../images/fbbot15.PNG[]
+
+En bas de la page vous retrouvez les informations du webhook, il vous suffit de récupérer la valeur du champs "Webhook URL" et la copier dans le champs Webhook de votre commande.
+
+[TIP]
+Dans le champs destination de la commande dans Jeedom vous pouvez spécifier un channel (ex #monchannel) ou un utilisateur (ex @toto).
+
+Voilà sous Jeedom vous avez juste à sauvegarder et là vous pourrez à partir de Jeedom envoyer des messages sur Slack
+
+== Récupération du token
+
+Voila comment récupérer votre token pour que Jeedom puisse envoyer des fichiers sur Slack, et en particulier des captures des caméras par exemple. Tout d'abord il faut aller https://api.fbbot.com/web?sudo=1[ici], puis tout en bas aller sur :
+
+image::../images/fbbot17.PNG[] 
+
+Ici en face de votre équipe, demander à Slack de générer le token, il va vous demander votre mots de passe puis vous renvoyer sur la même page, tout en bas demander à nouveau le token. Au bout de quelques secondes celui-ci va apparaître, il suffit de le copier dans le champs token sur Jeedom
+
+[TIP]
+Cette étape est optionnelle, elle est juste utile pour envoyer des captures de votre camera par Slack par exemple.
+
+== C'est quoi le résultat ?
+
+Voilà un exemple de ce qu'il est possible de faire une fois le plugin correctement et des interactions de créer : 
+
+image::../images/fbbot16.PNG[]
+
+[IMPORTANT]
+Si vous utilisez la fonction "ask" des scénarios, il faut bien envoyer la demande sur un channel dont Jeedom écoute les réponses sinon votre demande "ask" tombera en "timeout"
