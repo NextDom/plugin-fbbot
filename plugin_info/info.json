@@ -1,0 +1,9 @@
+{
+    "id": "fbbot",
+    "name": "Fbbot",
+    "description": "Plugin pour lier Jeedom à Facebook Messenger",
+    "licence": "AGPL",
+    "author": "Greenski",
+    "require": "1.0",
+    "category": "communication"
+}
