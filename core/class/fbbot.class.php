@@ -18,6 +18,20 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class fbbot extends eqLogic {
+	
+	/*     * ***********************Methode static*************************** */
+
+	public static function health() {
+		$https = strpos(network::getNetworkAccess('external'), 'https') !== false;
+		$return[] = array(
+			'test' => __('HTTPS', __FILE__),
+			'result' => ($https) ? __('OK', __FILE__) : __('NOK', __FILE__),
+			'advice' => ($https) ? '' : __('Votre Jeedom ne permet pas le fonctionnement de Telegram sans HTTPS', __FILE__),
+			'state' => $https,
+		);
+		return $return;
+	}
+	
 
 	public function postSave() {
 		$sms = $this->getCmd(null, 'text');
