@@ -26,7 +26,7 @@ class fbbot extends eqLogic {
 		$return[] = array(
 			'test' => __('HTTPS', __FILE__),
 			'result' => ($https) ? __('OK', __FILE__) : __('NOK', __FILE__),
-			'advice' => ($https) ? '' : __('Votre Jeedom ne permet pas le fonctionnement de Telegram sans HTTPS', __FILE__),
+			'advice' => ($https) ? '' : __('Votre Jeedom ne permet pas le fonctionnement de Fbbot sans HTTPS (Obligation imposée par Facebook)', __FILE__),
 			'state' => $https,
 		);
 		return $return;
