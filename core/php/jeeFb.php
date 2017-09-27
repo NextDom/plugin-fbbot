@@ -121,6 +121,8 @@ foreach ($json['entry'] as $entry) {
 		}
 		
 		if ($cmd_user->getConfiguration('interact') == 1) {
+			$parameters['plugin'] = 'fbbot';
+			log::add('fbbot', 'debug', 'Interaction ' . print_r($reply, true));	
 			$message_to_reply .= interactQuery::tryToReply(trim($message), $parameters);
 		} else {
 			$message_to_reply = 'Utilisateur non habilité';
