@@ -87,7 +87,7 @@ class fbbotCmd extends cmd {
 	    $recipients = array();
 	    $currentCmdFbUserId = $this->getConfiguration('fb_user_id');
 	    $currentCmdLogicalId = $this->getLogicalId();
-		
+
 		if ($currentCmdLogicalId == "alluser") {
 			foreach($eqLogic->getCmd('action') as $cmd) {
 				if ($cmd->getConfiguration('notifications') == 1 && $cmd->getConfiguration('fb_user_id') != "") { 
@@ -101,7 +101,7 @@ class fbbotCmd extends cmd {
 			}
 			$recipients[] = $currentCmdFbUserId;
 		}
-	    
+
 		$access_token = $eqLogic->getConfiguration('access_token');
 
 		$replyMarkup = null;
@@ -123,10 +123,10 @@ class fbbotCmd extends cmd {
 		$ch = curl_init($url);
 
 		foreach ($recipients as $recipient) {
-			
+
 			$filesToUpload = $_options['files'];
 			//$filesToUpload = ['/var/www/html/robots.txt','/var/www/html/plugins/fbbot/doc/images/fbbot_icon.png'];
-			
+
 			// gestion des pièces jointes
 			foreach ($filesToUpload as $file) {
 
@@ -141,14 +141,14 @@ class fbbotCmd extends cmd {
 				} elseif (preg_match("/video/i", $mime)) {
 					$fileType = "video";
 				}
-	
+
 				$attachment = ["attachment" => [
 					"type" => $fileType,
 					"payload" => []
 				]];
-				
+
 				$filedata = new CurlFile(realpath($file), $mime);
-				
+
 				//Encode the array into JSON.
 				$postArgs = ["recipient" => json_encode(["id" => $recipient]), "message" => json_encode($attachment), "filedata" => $filedata];
 				//Tell cURL that we want to send a POST request.
@@ -159,16 +159,16 @@ class fbbotCmd extends cmd {
 		        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:multipart/form-data'));
 			    $result_req = curl_exec($ch);
-			}	
-			
-			
+			}
+
+
 			$data = [
 			    	"recipient" => ["id" => $recipient],
-			    	"message" => ["text" => $_options['title'] . $_options['message']]
+			    	"message" => ["text" => $_options['message']]
 				];
-				
+
 			if (isset($_options['answer'])) $data['message']['quick_replies'] = $quick_Replies_array;
-			
+
 			//Encode the array into JSON.
 			$jsonDataEncoded = json_encode($data);
 			//Tell cURL that we want to send a POST request.

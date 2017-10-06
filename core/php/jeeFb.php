@@ -51,9 +51,9 @@ if ( isset( $_SERVER['HTTP_X_HUB_SIGNATURE'] ) ) {
 		echo json_encode(array('text' => __('Page inconnue : ', __FILE__) . $json['entry'][0]['id']));
 		die();
 	}
-	
+
 	if ( "sha1=" . hash_hmac( 'sha1', $content, $eqLogic->getConfiguration('app_secret') ) != $_SERVER['HTTP_X_HUB_SIGNATURE'] )
-	
+
 		die();
 }
 
@@ -65,33 +65,25 @@ foreach ($json['entry'] as $entry) {
 		$message = $messaging['message']['text'];
 		$page_id = $messaging['recipient']['id'];
 		$quickReplyPayLoad = $messaging['message']['quick_reply']['payload'];
-		
+
 		if (isset($message) && isset($sender)) {
-			$cmd_text = $eqLogic->getCmd('info', 'text'); 
+			$cmd_text = $eqLogic->getCmd('info', 'text');
 			$cmd_text->event($message);
-			
+
 			$cmd_sender = $eqLogic->getCmd('info', 'sender');
 			$cmd_sender->event($sender);
 		} else {
 			continue;
 		}
-	
+
 		// gestion des quick Replies
 		foreach ($eqLogic->getCmd('action') as $cmd) {
-			if (isset($quickReplyPayLoad) && $cmd->getCache('storeVariable', 'none') != 'none') {
-				$dataStore = new dataStore();
-				$dataStore->setType('scenario');
-				$dataStore->setKey($cmd->getCache('storeVariable', 'none'));
-				$dataStore->setValue($message);
-				$dataStore->setLink_id(-1);
-				$dataStore->save();
-				$cmd->setCache('storeVariable', 'none');
-				$cmd->save();
+			if (isset($quickReplyPayLoad) && $cmd->askResponse($message)) {
 				echo json_encode(array('text' => ''));
 				continue 2;
 			}
 		}
-	
+
 		// vérification de l'utlisateur demandeur
 		$cmd_user = $eqLogic->getCmd('action', $sender);
 		if (!is_object($cmd_user)) {
@@ -111,15 +103,15 @@ foreach ($json['entry'] as $entry) {
 				continue;
 			}
 		}
-		
+
 		$user_profile = $cmd_user->getConfiguration('jeedom_username') != "" ? $cmd_user->getConfiguration('jeedom_username') : null;
 		$parameters = array();
-		
+
 		$user = user::byLogin($user_profile);
 		if (is_object($user)) {
 			$parameters['profile'] = $user_profile;
 		}
-		
+
 		if ($cmd_user->getConfiguration('interact') == 1) {
 			$parameters['plugin'] = 'fbbot';
 			log::add('fbbot', 'debug', 'Interaction ' . print_r($reply, true));
@@ -129,7 +121,7 @@ foreach ($json['entry'] as $entry) {
 		} else {
 			$message_to_reply = 'Utilisateur non habilité';
 		}
-		 
+
 		//API Url
 		$url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' . $access_token;
 		//Initiate cURL.
