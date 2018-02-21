@@ -32,7 +32,7 @@ if (!isset($_REQUEST['hub_challenge']) && !isset( $_SERVER['HTTP_X_HUB_SIGNATURE
 if (isset($_REQUEST['hub_challenge'])) {
     $challenge = $_REQUEST['hub_challenge'];
     $hub_verify_token = $_REQUEST['hub_verify_token'];
-    
+
 	if ($hub_verify_token === $verify_token) {
 	    echo $challenge;
 	    die ();
@@ -128,6 +128,7 @@ foreach ($json['entry'] as $entry) {
 		$ch = curl_init($url);
 		//The JSON data.
 		$jsonData = '{
+           "messaging_type": "RESPONSE",
 		   "recipient":{
 		        "id":"'. $sender .'"
 		    },

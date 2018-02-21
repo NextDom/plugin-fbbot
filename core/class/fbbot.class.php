@@ -18,7 +18,7 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class fbbot extends eqLogic {
-	
+
 	/*     * ***********************Methode static*************************** */
 
 	public static function health() {
@@ -31,7 +31,7 @@ class fbbot extends eqLogic {
 		);
 		return $return;
 	}
-	
+
 
 	public function postSave() {
 		$sms = $this->getCmd(null, 'text');
@@ -57,8 +57,8 @@ class fbbot extends eqLogic {
 		$sender->setSubType('string');
 		$sender->setEqLogic_id($this->getId());
 		$sender->save();
-		
-		
+
+
 		$alluser = $this->getCmd(null, 'alluser');
 		if (!is_object($alluser)) {
 			$alluser = new fbbotCmd();
@@ -70,7 +70,7 @@ class fbbot extends eqLogic {
 			$alluser->setEqLogic_id($this->getId());
 			$alluser->save();
 		}
-		
+
 	}
 }
 
@@ -90,7 +90,7 @@ class fbbotCmd extends cmd {
 
 		if ($currentCmdLogicalId == "alluser") {
 			foreach($eqLogic->getCmd('action') as $cmd) {
-				if ($cmd->getConfiguration('notifications') == 1 && $cmd->getConfiguration('fb_user_id') != "") { 
+				if ($cmd->getConfiguration('notifications') == 1 && $cmd->getConfiguration('fb_user_id') != "") {
 					$recipients[] = $cmd->getConfiguration('fb_user_id');
 				}
 			}
@@ -163,7 +163,8 @@ class fbbotCmd extends cmd {
 
 
 			$data = [
-			    	"recipient" => ["id" => $recipient],
+                    "messaging_type" => "MESSAGE_TAG",
+                    "recipient" => ["id" => $recipient],
 			    	"message" => ["text" => $_options['message']]
 				];
 
@@ -181,7 +182,7 @@ class fbbotCmd extends cmd {
 		    $result_req = curl_exec($ch);
 		}
 	curl_close($ch);
-	return;	
+	return;
 	}
 
 }
