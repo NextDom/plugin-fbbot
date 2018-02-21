@@ -1,0 +1,1 @@
+* Nouveau format de documentation
