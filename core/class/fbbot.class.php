@@ -26,7 +26,9 @@ class fbbot extends eqLogic {
 		$return[] = array(
 			'test' => __('HTTPS', __FILE__),
 			'result' => ($https) ? __('OK', __FILE__) : __('NOK', __FILE__),
-			'advice' => ($https) ? '' : __('Votre Jeedom ne permet pas le fonctionnement de Fbbot sans HTTPS (Obligation imposée par Facebook)', __FILE__),
+			'advice' => ($https) ? '' : __('Votre Jeedom ne permet pas le ' .
+                'fonctionnement de Fbbot sans HTTPS ' .
+                '(Obligation imposée par Facebook)', __FILE__),
 			'state' => $https,
 		);
 		return $return;
@@ -92,7 +94,8 @@ class fbbotCmd extends cmd
 
 		if ($currentCmdLogicalId == "alluser") {
 			foreach($eqLogic->getCmd('action') as $cmd) {
-				if ($cmd->getConfiguration('notifications') == 1 && $cmd->getConfiguration('fb_user_id') != "") {
+				if ($cmd->getConfiguration('notifications') == 1 &&
+                        $cmd->getConfiguration('fb_user_id') != "") {
 					$recipients[] = $cmd->getConfiguration('fb_user_id');
 				}
 			}
@@ -114,20 +117,26 @@ class fbbotCmd extends cmd
 			$replyMarkup = $_options['answer'];
 			if (count($replyMarkup) > 0) {
 				for ($i = 0; $i < count($replyMarkup); $i++) {
-		    		$quick_Replies_array[] = ["content_type" => "text", "title" => $replyMarkup[$i], "payload" => "REPLY_" . $i];
+		    		$quick_Replies_array[] = [
+                        "content_type" => "text",
+                        "title" => $replyMarkup[$i],
+                        "payload" => "REPLY_" . $i
+                    ];
 				}
 			}
 		}
 
 		//API Url
-		$url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' . $access_token;
+		$url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' .
+            $access_token;
 		//Initiate cURL.
 		$ch = curl_init($url);
 
 		foreach ($recipients as $recipient) {
 
 			$filesToUpload = $_options['files'];
-			//$filesToUpload = ['/var/www/html/robots.txt','/var/www/html/plugins/fbbot/doc/images/fbbot_icon.png'];
+			//$filesToUpload = ['/var/www/html/robots.txt',
+            //'/var/www/html/plugins/fbbot/doc/images/fbbot_icon.png'];
 
 			// gestion des pièces jointes
 			foreach ($filesToUpload as $file) {
@@ -151,14 +160,21 @@ class fbbotCmd extends cmd
 
 				$filedata = new CurlFile(realpath($file), $mime);
 
-				$postArgs = ["recipient" => json_encode(["id" => $recipient]), "message" => json_encode($attachment), "filedata" => $filedata];
+				$postArgs = [
+                    "recipient" => json_encode(["id" => $recipient]),
+                    "message" => json_encode($attachment),
+                    "filedata" => $filedata
+                ];
+
 				curl_setopt($ch, CURLOPT_POST, 1);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $postArgs);
 		        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:multipart/form-data'));
+				curl_setopt($ch,
+                    CURLOPT_HTTPHEADER,
+                    array('Content-Type:multipart/form-data')
+                );
 			    $result_req = curl_exec($ch);
 			}
-
 
 			$data = [
                     "messaging_type" => "MESSAGE_TAG",
@@ -167,13 +183,18 @@ class fbbotCmd extends cmd
                      "tag" => "SHIPPING_UPDATE"
 				];
 
-			if (isset($_options['answer'])) $data['message']['quick_replies'] = $quick_Replies_array;
+			if (isset($_options['answer'])) {
+                $data['message']['quick_replies'] = $quick_Replies_array;
+            }
 
 			$jsonDataEncoded = json_encode($data);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonDataEncoded);
 	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+			curl_setopt($ch,
+                CURLOPT_HTTPHEADER,
+                array('Content-Type: application/json')
+            );
 		    $result_req = curl_exec($ch);
 		}
 	curl_close($ch);
