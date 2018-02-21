@@ -74,7 +74,8 @@ class fbbot extends eqLogic {
 	}
 }
 
-class fbbotCmd extends cmd {
+class fbbotCmd extends cmd
+{
 
 	public function preSave() {
 		if ($this->getSubtype() == 'message') {
@@ -82,7 +83,8 @@ class fbbotCmd extends cmd {
 		}
 	}
 
-	public function execute($_options = array()) {
+	public function execute($_options = array())
+    {
 	    $eqLogic = $this->getEqLogic();
 	    $recipients = array();
 	    $currentCmdFbUserId = $this->getConfiguration('fb_user_id');
@@ -149,13 +151,9 @@ class fbbotCmd extends cmd {
 
 				$filedata = new CurlFile(realpath($file), $mime);
 
-				//Encode the array into JSON.
 				$postArgs = ["recipient" => json_encode(["id" => $recipient]), "message" => json_encode($attachment), "filedata" => $filedata];
-				//Tell cURL that we want to send a POST request.
 				curl_setopt($ch, CURLOPT_POST, 1);
-				//Attach our encoded JSON string to the POST fields.
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $postArgs);
-				//Set the content type to application/json
 		        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:multipart/form-data'));
 			    $result_req = curl_exec($ch);
@@ -165,18 +163,15 @@ class fbbotCmd extends cmd {
 			$data = [
                     "messaging_type" => "MESSAGE_TAG",
                     "recipient" => ["id" => $recipient],
-			    	"message" => ["text" => $_options['message']]
+			    	"message" => ["text" => $_options['message']],
+                     "tag" => "SHIPPING_UPDATE"
 				];
 
 			if (isset($_options['answer'])) $data['message']['quick_replies'] = $quick_Replies_array;
 
-			//Encode the array into JSON.
 			$jsonDataEncoded = json_encode($data);
-			//Tell cURL that we want to send a POST request.
 			curl_setopt($ch, CURLOPT_POST, 1);
-			//Attach our encoded JSON string to the POST fields.
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonDataEncoded);
-			//Set the content type to application/json
 	        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
 		    $result_req = curl_exec($ch);
