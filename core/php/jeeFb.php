@@ -19,7 +19,7 @@
 
 header('Content-type: application/json');
 require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
- 
+
 $verify_token     = jeedom::getApiKey('fbbot');
 $hub_verify_token = null;
 
@@ -130,6 +130,7 @@ foreach ($json['entry'] as $entry) {
         $ch              = curl_init($url);
         //The JSON data.
         $jsonData        = '{
+           "messaging_type": "RESPONSE",
 		   "recipient":{
 		        "id":"' . $sender . '"
 		    },
@@ -152,4 +153,3 @@ foreach ($json['entry'] as $entry) {
         }
     }
 }
- 

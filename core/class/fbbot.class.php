@@ -164,11 +164,12 @@ class fbbotCmd extends cmd
                 $result_req = curl_exec($ch);
             }
 
-
             $data = [
-                "recipient" => ["id" => $recipient],
-                "message"   => ["text" => $_options['message']]
-            ];
+                    "messaging_type" => "MESSAGE_TAG",
+                    "recipient" => ["id" => $recipient],
+			    	"message" => ["text" => $_options['message']],
+                     "tag" => "SHIPPING_UPDATE"
+				];
 
             if (isset($_options['answer']))
                 $data['message']['quick_replies'] = $quick_Replies_array;
