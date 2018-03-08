@@ -19,7 +19,7 @@
 
 header('Content-type: application/json');
 require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
- 
+
 $verify_token     = jeedom::getApiKey('fbbot');
 $hub_verify_token = null;
 
@@ -57,9 +57,13 @@ if (isset($_SERVER['HTTP_X_HUB_SIGNATURE'])) {
 }
 
 $access_token = $eqLogic->getConfiguration('access_token');
+log::add('fbbot', 'debug', 'Traitement de message(s) reçu(s) et valide(s)');
 
 foreach ($json['entry'] as $entry) {
     foreach ($entry['messaging'] as $messaging) {
+
+        log::add('fbbot', 'debug', 'Traitement du message : ' . $messaging['message']['text']);
+
         $sender            = $messaging['sender']['id'];
         $message           = $messaging['message']['text'];
         $page_id           = $messaging['recipient']['id'];
@@ -130,6 +134,7 @@ foreach ($json['entry'] as $entry) {
         $ch              = curl_init($url);
         //The JSON data.
         $jsonData        = '{
+           "messaging_type": "RESPONSE",
 		   "recipient":{
 		        "id":"' . $sender . '"
 		    },
@@ -149,7 +154,7 @@ foreach ($json['entry'] as $entry) {
         //Execute the request
         if (!empty($messaging['message'])) {
             $result = curl_exec($ch);
+            log::add('fbbot', 'debug', 'Envoi de la réponse - résultat : ' . $result);
         }
     }
 }
- 
