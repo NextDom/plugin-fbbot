@@ -57,9 +57,13 @@ if (isset($_SERVER['HTTP_X_HUB_SIGNATURE'])) {
 }
 
 $access_token = $eqLogic->getConfiguration('access_token');
+log::add('fbbot', 'debug', 'Traitement de message(s) reçu(s) et valide(s)');
 
 foreach ($json['entry'] as $entry) {
     foreach ($entry['messaging'] as $messaging) {
+
+        log::add('fbbot', 'debug', 'Traitement du message : ' . $messaging['message']['text']);
+
         $sender            = $messaging['sender']['id'];
         $message           = $messaging['message']['text'];
         $page_id           = $messaging['recipient']['id'];
@@ -150,6 +154,7 @@ foreach ($json['entry'] as $entry) {
         //Execute the request
         if (!empty($messaging['message'])) {
             $result = curl_exec($ch);
+            log::add('fbbot', 'debug', 'Envoi de la réponse - résultat : ' . $result);
         }
     }
 }
