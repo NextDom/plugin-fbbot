@@ -9,7 +9,7 @@ Retrouvez le sur le Market Jeedom [ici](https://www.jeedom.com/market/index.php?
 
 
 ### Documentation
-Vous trouverez la documentation [ici](https://htmlpreview.github.io/?https://github.com/Jeedom-Plugins-Extra/plugin_fbbot/blob/master/doc/fr_FR/index.html)
+Vous trouverez la documentation [ici](https://jeedom-plugins-extra.github.io/plugin-fbbot/fr_FR/)
 
 ### Forum
 Lien vers le forum: [ici](https://www.jeedom.com/forum/viewtopic.php?f=142&t=34154)
