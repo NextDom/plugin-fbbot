@@ -1,5 +1,7 @@
 # Plugin Fbbot pour Jeedom
 
+[![Join the chat at https://gitter.im/NextDom/plugin-fbbot](https://badges.gitter.im/NextDom/plugin-fbbot.svg)](https://gitter.im/NextDom/plugin-fbbot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 <img src="plugin_info/fbbot_icon.png" align="right">
 
 Ce plugin permet de connecter Jeedom à un bot Facebook Messenger afin de gérer les interactions avec Jeedom.
