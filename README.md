@@ -9,14 +9,14 @@ Retrouvez le sur le Market Jeedom [ici](https://www.jeedom.com/market/index.php?
 
 
 ### Documentation
-Vous trouverez la documentation [ici](https://jeedom-plugins-extra.github.io/plugin-fbbot/fr_FR/)
+Vous trouverez la documentation [ici](https://nextdom.github.io/plugin-fbbot/)
 
 ### Forum
-Lien vers le forum: [ici](https://www.jeedom.com/forum/viewtopic.php?f=142&t=34154)
+Lien vers le forum: [ici](https://www.nextdom.org/en/forum/plugins-nextdom/)
 
 
 ### Chatroom
-Lien vers le chat: [ici](https://gitter.im/Jeedom-Plugins-Extra/plugin-fbbot)
+Lien vers le chat: [ici](https://discordapp.com/invite/aXVQCbN)
 
 
 ### Compatibilités :
