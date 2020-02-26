@@ -17,7 +17,6 @@
  */
 
 
-header('Content-type: application/json');
 require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
 
 $verify_token     = jeedom::getApiKey('fbbot');
@@ -40,6 +39,8 @@ if (isset($_REQUEST['hub_challenge'])) {
         die();
     }
 }
+
+header('Content-type: application/json');
 
 if (isset($_SERVER['HTTP_X_HUB_SIGNATURE'])) {
     $content = file_get_contents('php://input');
