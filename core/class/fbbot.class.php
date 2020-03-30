@@ -185,7 +185,14 @@ class fbbotCmd extends cmd
             //Set the content type to application/json
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            $result_req      = curl_exec($ch);
+            $result_req  = curl_exec($ch);
+
+            $json_result = json_decode($result_req);
+            $debug = var_export($result_req, true);
+            if(isset($json_result->message_id))
+                log::add('fbbot', 'debug', 'Envoi du message à '.$recipient.' (msg_id :' . $json_result->message_id.')');
+            else
+                log::add('fbbot', 'debug', 'Erreur lors de l\'envoi du message à '.$recipient.' : ' . $debug);
         }
         curl_close($ch);
         return;
