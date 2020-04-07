@@ -189,10 +189,11 @@ class fbbotCmd extends cmd
 
             $json_result = json_decode($result_req);
             $debug = var_export($result_req, true);
-            if(isset($json_result->message_id))
+            if(isset($json_result->message_id)) {
                 log::add('fbbot', 'debug', 'Envoi du message à '.$recipient.' (msg_id :' . $json_result->message_id.')');
-            else
+            } else {
                 log::add('fbbot', 'debug', 'Erreur lors de l\'envoi du message à '.$recipient.' : ' . $debug);
+            }
         }
         curl_close($ch);
         return;
