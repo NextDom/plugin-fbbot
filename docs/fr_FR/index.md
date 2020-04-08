@@ -212,7 +212,7 @@ Cliquez sur "Verify and Save".
 
 Dans la partie "Commandes de champs de webhook", modifiez la version des champs en **V6.0** :
 
-![fbbot12](../images/fbbot14.png)
+![fbbot14](../images/fbbot14.png)
 
 Un indicateur vert vous confirmera que l'opération de vérification a réussi et
  le bon enregistrement.
