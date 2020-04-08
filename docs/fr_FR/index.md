@@ -1,12 +1,10 @@
-Description
-===
+# Description
 
 Ce plugin permet d'établir une connexion entre Facebook Messenger et Jeedom pour
 envoyer des alertes à partir de Jeedom ou discuter avec Jeedom (en utilisant les
  interactions).
 
-1. Pré-requis
-======
+# Pré-requis
 
 Les pré-requis suivant sont nécessaires pour faire fonctionner le plugin fbbot :
 -   Disposer d'une URL externe pour Jeedom
@@ -18,8 +16,7 @@ commandes
 -   Avoir téléchargé le plugin (qui a dit que c'était évident ? ;)
 
 
-2. Etapes d'installation
-======
+# Etapes d'installation
 
 Dans l'ordre nous allons effectuer les étapes d'installation suivantes :
 -   Créer l'application Messenger sur Facebook
@@ -30,8 +27,7 @@ Dans l'ordre nous allons effectuer les étapes d'installation suivantes :
 Ces étapes doivent être effectuées dans cet ordre afin de disposer des tokens
 nécessaires pour autoriser l'interaction entre Facebook et votre Jeedom.
 
-3. Création de l'application Messenger
-======
+# Création de l'application Messenger
 
 La première étape est de créer une page Facebook (à ne pas confondre avec un
 compte ou un profil utilisateur).
@@ -67,8 +63,7 @@ et d'utiliser les API Facebook. Copier ce token afin de le réutiliser dans
 quelques secondes.
 Nous allons maintenant passer à l'étape de création dans Jeedom.
 
-4. Configuration des équipements
-======
+# Configuration des équipements
 
 Nous allons maintenant créer un équipement dans Jeedom pour gérer notre bot.
 Allez dans Jeedom et choisissez "Fbbot" dans la liste des plugins.
@@ -141,8 +136,7 @@ Par défaut les commandes contiennent trois commandes crées lors de
 -   **Tous** : Permet de contacter tous les utilisateurs enregistrés lorsqu'il
  y en aura. Voir gestion des utilisateurs.
 
-4.1 Trouver l'identifiant de sa page Facebook
-------
+## Trouver l'identifiant de sa page Facebook
 
 Pour trouver l'identifiant de sa page Facebook, suivez les étapes suivantes :
 
@@ -162,8 +156,7 @@ Scroller tout en bas, puis cliquer sur "See All Information". Cela ouvre la
 Votre Page ID est tout en bas. Copier le dans le champ "Page ID" de votre
  équipement fbbot.
 
-4.2 Trouver l'app secret
-------
+## Trouver l'app secret
 
 Pour trouver votre app secret suivre les étapes suivantes :
 
@@ -180,8 +173,7 @@ Sur la page qui s'affiche cliquer sur le bouton "Show" pour visualiser l'app
 Copier ce code dans le champ "App Secret" des paramètres de votre équipement
  fbbot Jeedom.
 
-5. Configuration du webhook
-======
+# Configuration du webhook
 
 A ce stade notre équipement fbbot a été complètement configuré et activé et est
  donc pleinement fonctionnel.
@@ -218,6 +210,10 @@ Dans le champ "Verify Token", entrer votre Verify Token indiqué dans le champ
 
 Cliquez sur "Verify and Save".
 
+Dans la partie "Commandes de champs de webhook", modifiez la version des champs en **V6.0** :
+
+![fbbot14](../images/fbbot14.png)
+
 Un indicateur vert vous confirmera que l'opération de vérification a réussi et
  le bon enregistrement.
 
@@ -227,8 +223,7 @@ Si cette étape échoue c'est que vous avez manqué ou mal effectué l'une des
 Votre Jeedom et Facebook Messenger peuvent maintenant communiquer.
 
 
-6. Gestion des utilisateurs
-======
+# Gestion des utilisateurs
 
 Vous venez de finir la configuration du plugin et de Jeedom.
 Il vous faut à présent utiliser le bot.

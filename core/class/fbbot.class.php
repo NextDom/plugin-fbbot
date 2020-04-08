@@ -122,7 +122,7 @@ class fbbotCmd extends cmd
         }
 
         //API Url
-        $url = 'https://graph.facebook.com/v2.6/me/messages?access_token=' . $access_token;
+        $url = 'https://graph.facebook.com/v6.0/me/messages?access_token=' . $access_token;
         //Initiate cURL.
         $ch  = curl_init($url);
 
@@ -130,45 +130,47 @@ class fbbotCmd extends cmd
 
             $filesToUpload = $_options['files'];
             //$filesToUpload = ['/var/www/html/robots.txt','/var/www/html/plugins/fbbot/doc/images/fbbot_icon.png'];
-            // gestion des pièces jointes
-            foreach ($filesToUpload as $file) {
+            if(is_array($filesToUpload)) {
+                // gestion des pièces jointes
+                foreach ($filesToUpload as $file) {
 
-                $attachment = null;
+                    $attachment = null;
 
-                $mime     = mime_content_type($file);
-                $fileType = "file";
-                if (in_array($mime, ['image/png', 'image/gif', 'image/jpg'])) {
-                    $fileType = "image";
-                } elseif (preg_match("/audio/i", $mime)) {
-                    $fileType = "audio";
-                } elseif (preg_match("/video/i", $mime)) {
-                    $fileType = "video";
+                    $mime     = mime_content_type($file);
+                    $fileType = "file";
+                    if (in_array($mime, ['image/png', 'image/gif', 'image/jpg'])) {
+                        $fileType = "image";
+                    } elseif (preg_match("/audio/i", $mime)) {
+                        $fileType = "audio";
+                    } elseif (preg_match("/video/i", $mime)) {
+                        $fileType = "video";
+                    }
+
+                    $attachment = ["attachment" => [
+                            "type"    => $fileType,
+                            "payload" => []
+                    ]];
+
+                    $filedata = new CurlFile(realpath($file), $mime);
+
+                    //Encode the array into JSON.
+                    $postArgs   = ["recipient" => json_encode(["id" => $recipient]), "message" => json_encode($attachment), "filedata" => $filedata];
+                    //Tell cURL that we want to send a POST request.
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    //Attach our encoded JSON string to the POST fields.
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $postArgs);
+                    //Set the content type to application/json
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:multipart/form-data'));
+                    $result_req = curl_exec($ch);
                 }
-
-                $attachment = ["attachment" => [
-                        "type"    => $fileType,
-                        "payload" => []
-                ]];
-
-                $filedata = new CurlFile(realpath($file), $mime);
-
-                //Encode the array into JSON.
-                $postArgs   = ["recipient" => json_encode(["id" => $recipient]), "message" => json_encode($attachment), "filedata" => $filedata];
-                //Tell cURL that we want to send a POST request.
-                curl_setopt($ch, CURLOPT_POST, 1);
-                //Attach our encoded JSON string to the POST fields.
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $postArgs);
-                //Set the content type to application/json
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:multipart/form-data'));
-                $result_req = curl_exec($ch);
             }
 
             $data = [
                     "messaging_type" => "MESSAGE_TAG",
                     "recipient" => ["id" => $recipient],
 			    	"message" => ["text" => $_options['message']],
-                     "tag" => "SHIPPING_UPDATE"
+                     "tag" => "ACCOUNT_UPDATE"
 				];
 
             if (isset($_options['answer']))
@@ -183,7 +185,15 @@ class fbbotCmd extends cmd
             //Set the content type to application/json
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-            $result_req      = curl_exec($ch);
+            $result_req  = curl_exec($ch);
+
+            $json_result = json_decode($result_req);
+            $debug = var_export($result_req, true);
+            if(isset($json_result->message_id)) {
+                log::add('fbbot', 'debug', 'Envoi du message à '.$recipient.' (msg_id :' . $json_result->message_id.')');
+            } else {
+                log::add('fbbot', 'debug', 'Erreur lors de l\'envoi du message à '.$recipient.' : ' . $debug);
+            }
         }
         curl_close($ch);
         return;

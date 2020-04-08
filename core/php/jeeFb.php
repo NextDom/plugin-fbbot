@@ -17,7 +17,6 @@
  */
 
 
-header('Content-type: application/json');
 require_once dirname(__FILE__) . "/../../../../core/php/core.inc.php";
 
 $verify_token     = jeedom::getApiKey('fbbot');
@@ -40,6 +39,8 @@ if (isset($_REQUEST['hub_challenge'])) {
         die();
     }
 }
+
+header('Content-type: application/json');
 
 if (isset($_SERVER['HTTP_X_HUB_SIGNATURE'])) {
     $content = file_get_contents('php://input');
@@ -91,16 +92,16 @@ foreach ($json['entry'] as $entry) {
         $cmd_user = $eqLogic->getCmd('action', $sender);
         if (!is_object($cmd_user)) {
             if ($eqLogic->getConfiguration('isAccepting') == 1) {
-                $cmd_user = (new fbbotCmd())
-                        ->setLogicalId($sender)
-                        ->setIsVisible(1)
-                        ->setName("New user")
-                        ->setConfiguration('interact', 0)
-                        ->setConfiguration('fb_user_id', $sender)
-                        ->setConfiguration('jeedom_username', 'admin')
-                        ->setType('action')
-                        ->setSubType('message')
-                        ->setEqLogic_id($eqLogic->getId());
+                $cmd_user = new fbbotCmd();
+                $cmd_user->setLogicalId($sender);
+                $cmd_user->setIsVisible(1);
+                $cmd_user->setName("New user");
+                $cmd_user->setConfiguration('interact', 0);
+                $cmd_user->setConfiguration('fb_user_id', $sender);
+                $cmd_user->setConfiguration('jeedom_username', 'admin');
+                $cmd_user->setType('action');
+                $cmd_user->setSubType('message');
+                $cmd_user->setEqLogic_id($eqLogic->getId());
                 $cmd_user->save();
             } else {
                 continue;
